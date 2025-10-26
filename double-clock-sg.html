@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Clock SG</title>
+<style>
+  html,body{margin:0;padding:0;background:transparent}
+  body{font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+  .wrap{display:grid;gap:8px}
+  .row{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:10px}
+  .flag{width:44px;height:32px;overflow:hidden}
+  .time{font-size:42px;font-weight:700;line-height:1;color:#fff;letter-spacing:.5px}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="row">
+      <div class="flag" id="flag-remote"></div>
+      <div class="time" id="time-remote">--:--</div>
+    </div>
+    <div class="row">
+      <div class="flag" id="flag-fr"></div>
+      <div class="time" id="time-fr">--:--</div>
+    </div>
+  </div>
+<script>
+  const SHOW_SECONDS = false;
+  const SCALE = 1.0;
+
+  const FLAGS = {
+    FR:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>`,
+    SG:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 3"><rect width="4" height="3" fill="#EF3340"/><rect width="4" height="1.5" fill="#fff"/><path d="M1.05 0.75a.6.6 0 1 0 0 1.2 0.65 0.65 0 1 1 0-1.2z" fill="#EF3340"/></svg>`
+  };
+
+  const REMOTE_TZ = "Asia/Singapore";
+  const FR_TZ = "Europe/Paris";
+
+  const rs = document.documentElement.style;
+  rs.setProperty("--s", SCALE);
+  document.querySelectorAll('.time').forEach(el=>el.style.fontSize = `${42*SCALE}px`);
+
+  document.getElementById("flag-remote").innerHTML = FLAGS.SG;
+  document.getElementById("flag-fr").innerHTML = FLAGS.FR;
+
+  const fmt = tz => new Intl.DateTimeFormat("fr-FR", {
+    hour:"2-digit", minute:"2-digit", second: SHOW_SECONDS ? "2-digit" : undefined, hour12:false, timeZone:tz
+  });
+
+  const fRemote = fmt(REMOTE_TZ);
+  const fFr = fmt(FR_TZ);
+
+  function tick(){
+    const now = new Date();
+    document.getElementById("time-remote").textContent = fRemote.format(now);
+    document.getElementById("time-fr").textContent = fFr.format(now);
+  }
+  tick(); setInterval(tick, 250);
+</script>
+</body>
+</html>
