@@ -5,10 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>RS</title>
   <style>
-    html, body { height: 100%; margin: 0; background: transparent; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: transparent;
+      overflow: hidden;
+    }
     video {
-      width: 100vw; height: 100vh;
-      object-fit: cover;
+      width: 100vw;
+      height: 100vh;
+      object-fit: contain;
+      object-position: center;
       background: transparent;
       display: block;
     }
